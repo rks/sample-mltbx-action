@@ -12,5 +12,11 @@ function packageTask(~, args)
         error("build:package:versionNotSet", "Please provide a package version number");
     end
 
-    fprintf("packaging version %s\n", args.Version);
+    if startsWith(args.Version, "v")
+        versionNumber = extractAfter(args.Version, 1);
+    else
+        versionNumber = args.Version;
+    end
+
+    fprintf("packaging version %s\n", versionNumber);
 end
