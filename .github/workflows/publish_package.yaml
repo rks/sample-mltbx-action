@@ -19,7 +19,7 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v2
         with:
-          cache: true
+          cache: false
           release: latest-including-prerelease
 
       - name: Build package
@@ -28,13 +28,12 @@ jobs:
           tasks: package(Version="${{github.ref_name}}")
 
       - name: Draft release
+        id: draft_release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           fail_on_unmatched_files: true
           files: sample-*.mltbx
 
-      - name: Publish release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: false
+      - name: Print release ID
+        run: echo ${{steps.draft_release.outputs.id}}
