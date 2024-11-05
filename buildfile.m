@@ -5,6 +5,7 @@ end
 function packageTask(~, args)
     arguments
         ~
+        args.ID(1,1) string = "00000000-0000-0000-0000-000000000000"
         args.Version(1,1) string = ""
     end
 
@@ -18,5 +19,18 @@ function packageTask(~, args)
         versionNumber = args.Version;
     end
 
-    fprintf("packaging version %s\n", versionNumber);
+    toolboxFolder = fullfile(pwd, "toolbox");
+
+    toolboxOptions = matlab.addons.toolbox.ToolboxOptions( ...
+        toolboxFolder, args.ID ...
+    );
+
+    toolboxOptions.ToolboxName = "Sample";
+    toolboxOptions.ToolboxVersion = versionNumber;
+
+    toolboxOptions.OutputFile = fullfile( ...
+        pwd, sprintf("sample-%s.mltbx", toolboxOptions.ToolboxVersion) ...
+    );
+
+    matlab.addons.toolbox.packageToolbox(toolboxOptions);
 end
