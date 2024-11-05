@@ -6,7 +6,7 @@ on:
       - "v*"
 
 jobs:
-  create-package:
+  publish-package:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,3 +23,9 @@ jobs:
         uses: matlab-actions/run-build@v2
         with:
           tasks: package(Version="${{github.ref_name}}")
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: sample-${{github.ref_name}}.mltbx
+          fail_on_unmatched_files: true
