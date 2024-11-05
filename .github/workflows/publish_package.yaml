@@ -27,9 +27,14 @@ jobs:
         with:
           tasks: package(Version="${{github.ref_name}}")
 
-      - name: Create release
+      - name: Draft release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           fail_on_unmatched_files: true
           files: sample-*.mltbx
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
