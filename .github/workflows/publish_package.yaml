@@ -35,5 +35,13 @@ jobs:
           fail_on_unmatched_files: true
           files: sample-*.mltbx
 
-      - name: Print release ID
-        run: echo ${{steps.draft_release.outputs.id}}
+      - name: Publish release
+        uses: actions/github-script@7
+        with:
+          script: |
+            octokit.rest.repos.updateRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: ${{steps.draft_release.outputs.id}},
+                draft: false,
+            })
